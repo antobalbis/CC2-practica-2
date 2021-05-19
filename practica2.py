@@ -111,14 +111,14 @@ TestAPIv2 = BashOperator(
 )
 
 LaunchServiceV1 = BashOperator(
-    task_id = 'launch_service_v2',
+    task_id = 'launch_service_v1',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
     docker-compose up -d serviciov1',
     dag = dag,
 )
 
 LaunchServiceV2 = BashOperator(
-    task_id = 'launch_service_v1',
+    task_id = 'launch_service_v2',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
     docker-compose up -d serviciov2',
     dag = dag,
