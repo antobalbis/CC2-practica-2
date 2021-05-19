@@ -41,6 +41,12 @@ MakeDir = BashOperator(
     dag = dag,
 )
 
+GetRepo = BashOperator(
+    task_id = 'download_repo',
+    bash_command = 'cd /tmp/datos/ && git clone https://github.com/antobalbis/CC2-practica2',
+    dag = dag,
+)
+
 DownloadData1 = BashOperator(
     task_id = 'descarga1',
     bash_command = 'wget -O /tmp/datos/humidity.csv.zip https://github.com/manuparra/MaterialCC2020/blob/master/humidity.csv.zip?raw=true',
@@ -65,21 +71,40 @@ UnzipData2 = BashOperator(
     dag = dag,
 )
 
-LaunchServices = BashOperator(
-    task_id = 'launch_containers',
-    bash_command = 'cd ~/Documentos/CC2/CC2-practica2/db && \
-    docker-compose up -d',
+LaunchDataBase = BashOperator(
+    task_id = 'launch_db_container',
+    bash_command = 'cd /tmp/datos/CC2-practica2/db && \
+    docker-compose start mongodb',
     dag = dag,
 )
 
 JoinDatos = BashOperator(
     task_id = 'pre_process_data',
-    bash_command = 'cd ~/Documentos/CC2/CC2-practica2/ && \
+    bash_command = 'cd /tmp/datos/CC2-practica2/ && \
     python3 clean_data.py',
     dag = dag,
 )
 
+TestAPIv1 = BashOperator(
+    task_id = 'run_test_v1',
+    bash_command = 'cd /tmp/datos/CC2-practica2/apiV1/src && \
+    python3 testapi.py',
+    dag = dag,
+)
 
+LaunchServiceV1 = BashOperator(
+    task_id = 'launch_service_v2',
+    bash_command = 'cd /tmp/datos/CC2-practica2/db && \
+    docker-compose start serviciov1',
+    dag = dag,
+)
+
+LaunchServiceV2 = BashOperator(
+    task_id = 'launch_service_v1',
+    bash_command = 'cd /tmp/datos/CC2-practica2/db && \
+    docker-compose start serviciov2',
+    dag = dag,
+)
 
 #Execution secuence 1
-MakeDir >> DownloadData1 >> DownloadData2 >> UnzipData1 >> UnzipData2 >> LaunchServices >>JoinDatos
+MakeDir >> [GetRepo, DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> TestAPIv1 >> [LaunchServiceV1, LaunchServiceV2]
