@@ -25,7 +25,7 @@ def predict(n_periods):
     df = define_dataframe(datos)
     print(df)
 
-    model = pm.auto_arima(df.sanfranciscohumidity, start_p=1, start_q=1,
+    model = pm.auto_arima(df.HUM, start_p=1, start_q=1,
                       test='adf',       # use adftest to find optimal 'd'
                       max_p=3, max_q=3, # maximum p and q
                       m=1,              # frequency of series
@@ -38,7 +38,7 @@ def predict(n_periods):
                       suppress_warnings=True,
                       stepwise=True)
 
-    model2 = pm.auto_arima(df.sanfranciscotemperature, start_p=1, start_q=1,
+    model2 = pm.auto_arima(df.TEMP, start_p=1, start_q=1,
                       test='adf',       # use adftest to find optimal 'd'
                       max_p=3, max_q=3, # maximum p and q
                       m=1,              # frequency of series

@@ -5,14 +5,14 @@ import json
 
 df1 = pd.read_csv('/tmp/datos/humidity.csv', header = 0)
 df1 = df1.iloc[1:40]
-df1 = df1.rename(columns={"San Francisco": "sanfranciscohumidity"})
+df1 = df1.rename(columns={"San Francisco": "HUM"})
 df0 = df1.datetime
-df1 = df1.sanfranciscohumidity
+df1 = df1.HUM
 
 df2 = pd.read_csv('/tmp/datos/temperature.csv', header = 0)
 df2 = df2.iloc[1:40]
-df2 = df2.rename(columns={"San Francisco": "sanfranciscotemperature"})
-df2 = df2.sanfranciscotemperature
+df2 = df2.rename(columns={"San Francisco": "TEMP"})
+df2 = df2.TEMP
 
 merge = pd.concat([df0, df1, df2], axis = 1)
 merge.to_csv('/tmp/datos/weather-data.csv')

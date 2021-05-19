@@ -23,8 +23,8 @@ def predict(n_periods):
     datos = get_data_database('localhost')
     df = define_dataframe(datos)
 
-    model = AutoReg(df.sanfranciscohumidity, lags = 1)
-    model2 = AutoReg(df.sanfranciscotemperature, lags = 1)
+    model = AutoReg(df.HUM, lags = 1)
+    model2 = AutoReg(df.TEMP, lags = 1)
 
     model_fit = model.fit()
     model2_fit = model2.fit()
