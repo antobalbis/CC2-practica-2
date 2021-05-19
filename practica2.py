@@ -90,9 +90,18 @@ JoinDatos = BashOperator(
 TestAPIv1 = BashOperator(
     task_id = 'run_test_v1',
     bash_command = 'cd /tmp/datos/CC2-practica2/apiV1/src && \
-    python3 testapi.py',
+    python3 apitest.py',
     dag = dag,
 )
+
+"""
+TestAPIv1 = BashOperator(
+    task_id = 'fail_test_v1',
+    bash_command = 'cd /tmp/datos/CC2-practica2/apiV1/src && \
+    python3 fail_test.py',
+    dag = dag,
+)
+"""
 
 LaunchServiceV1 = BashOperator(
     task_id = 'launch_service_v2',
@@ -109,4 +118,4 @@ LaunchServiceV2 = BashOperator(
 )
 
 #Execution secuence 1
-MakeDir >> GetRepo >> [DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> TestAPIv1 >> [LaunchServiceV1, LaunchServiceV2]
+MakeDir >> GetRepo >> [DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> FailTestAPIv1 >> [LaunchServiceV1, LaunchServiceV2]
