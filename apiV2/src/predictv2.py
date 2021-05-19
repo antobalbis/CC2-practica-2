@@ -8,14 +8,20 @@ import datetime
 
 server = Flask(__name__)
 
-def predict(n_periods):
-    client = MongoClient('mongodb://%s:%s@mongodb:27017' % ('admin', 'password'))
+def get_data_database(database):
+    client = MongoClient('mongodb://%s:%s@%s:27017' % ('admin', 'password', database))
     db = client.datos_tiempo
     col = db.tiempo
-    datos = dumps(col.find_one())
+    return dumps(col.find_one())
 
+def define_dataframe(datos):
     df = pd.read_json(datos)
     df = df.iloc[1:40]
+    return df
+
+def predict(n_periods):
+    datos = get_data_database('mongodb')
+    df = define_dataframe(datos)
 
     model = AutoReg(df.sanfranciscohumidity, lags = 1)
     model2 = AutoReg(df.sanfranciscotemperature, lags = 1)
@@ -27,8 +33,6 @@ def predict(n_periods):
     fc = model.predict(np.ndarray(shape = (2, 1), dtype = float), start = 0, end = n_periods)
     fc2 = model2.predict(np.ndarray(shape = (2, 1), dtype = float), start = 0, end = n_periods)
 
-    print(fc)
-    print(fc2)
     json_ = '{"predicciones": }'
 
     for x in range(n_periods):
