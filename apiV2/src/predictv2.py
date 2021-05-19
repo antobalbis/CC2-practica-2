@@ -35,7 +35,7 @@ def predict(n_periods):
 
     json_ = '{"predicciones": }'
 
-    for x in range(n_periods-1):
+    for x in range(n_periods):
         json_ = json_ + '{hour: ' + str(datetime.time(x%24,0)) + ', temp: ' + str(fc2[x]) + ', hum: ' + str(fc[x]) + '},'
 
     return dumps(json_)
@@ -53,4 +53,4 @@ def prediccion72():
     return predict(72)
 
 if __name__ == "__main__":
-    server.run(host='0.0.0.0')
+    server.run(host='0.0.0.0:5001')
