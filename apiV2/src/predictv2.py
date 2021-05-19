@@ -37,15 +37,15 @@ def predict(n_periods):
 
     return json_
 
-@server.route("/servicio/v1/prediccion/24horas")
+@server.route("/servicio/v2/prediccion/24horas")
 def prediccion24():
     return predict(24)
 
-@server.route("/servicio/v1/prediccion/48horas")
+@server.route("/servicio/v2/prediccion/48horas")
 def prediccion48():
     return predict(48)
 
-@server.route("/servicio/v1/prediccion/72horas")
+@server.route("/servicio/v2/prediccion/72horas")
 def prediccion72():
     return predict(72)
 
