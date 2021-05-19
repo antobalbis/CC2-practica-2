@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:4.2
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mimongo
+
+  serviciov1:
+    build: ../apiV1
+    ports:
+      - 5000:5000
+    links:
+      - mongodb
+
+  serviciov2:
+    build: ../apiV2
+    ports:
+      - 5001:5001
+    links:
+      - mongodb
