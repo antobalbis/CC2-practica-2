@@ -76,6 +76,7 @@ UnzipData2 = BashOperator(
 LaunchDataBase = BashOperator(
     task_id = 'launch_db_container',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
+    docker-compose build && \
     docker-compose up -d mongodb',
     dag = dag,
 )
