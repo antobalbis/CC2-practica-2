@@ -32,10 +32,9 @@ def predict(n_periods):
     json_ = '{"predicciones": }'
 
     for x in range(n_periods):
-        json_ = json_ + '{"hour":' + str(datetime.time(x%24,0)) + '"temp": ' + str(fc2[x+1]) + ', "hum": ' + str(fc[x+1]) + '},'
+        json_ = json_ + '{hour: ' + str(datetime.time(x%24,0)) + ', temp: ' + str(fc2[x]) + ', hum: ' + str(fc[x]) + '},'
 
-
-    return json_
+    return dumps(json_)
 
 @server.route("/servicio/v2/prediccion/24horas")
 def prediccion24():

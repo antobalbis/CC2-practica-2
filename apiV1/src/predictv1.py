@@ -58,7 +58,7 @@ def predict(n_periods):
     json_ = '{predicciones: }'
 
     for x in range(n_periods):
-        json_ = json_ + '{hour: ' + str(datetime.time(x%24,0)) + ' temp: ' + str(fc2[x]) + ', hum: ' + str(fc[x]) + '},'
+        json_ = json_ + '{hour: ' + str(datetime.time(x%24,0)) + ', temp: ' + str(fc2[x]) + ', hum: ' + str(fc[x]) + '},'
 
     return dumps(json_)
 
