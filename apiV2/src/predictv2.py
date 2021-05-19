@@ -29,13 +29,13 @@ def predict(n_periods):
     model_fit = model.fit()
     model2_fit = model2.fit()
 
-# Forecast
+    num_sol = n_periods
     fc = model.predict(np.ndarray(shape = (2, 1), dtype = float), start = 0, end = n_periods)
     fc2 = model2.predict(np.ndarray(shape = (2, 1), dtype = float), start = 0, end = n_periods)
 
     json_ = '{"predicciones": }'
 
-    for x in range(n_periods):
+    for x in range(num_sol):
         json_ = json_ + '{hour: ' + str(datetime.time(x%24,0)) + ', temp: ' + str(fc2[x]) + ', hum: ' + str(fc[x]) + '},'
 
     return dumps(json_)
