@@ -20,7 +20,7 @@ def define_dataframe(datos):
     return df
 
 def predict(n_periods):
-    datos = get_data_database('localhost')
+    datos = get_data_database('mongodb')
     df = define_dataframe(datos)
 
     model = AutoReg(df.HUM, lags = 1)
