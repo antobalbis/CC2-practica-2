@@ -1,3 +1,4 @@
+
 FROM python:3.8
 
 WORKDIR /code
@@ -9,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY src/ .
 
-CMD ["python3", "./procesardatos.py"]
+CMD ["python3", "./predictv1.py"]

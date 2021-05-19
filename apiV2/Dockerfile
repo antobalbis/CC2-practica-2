@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 COPY src/ .
 
-CMD ["python3", "./procesardatos.py"]
+CMD ["python3", "./predictv2.py"]

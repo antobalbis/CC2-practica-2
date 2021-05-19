@@ -50,12 +50,14 @@ GetRepo = BashOperator(
 DownloadData1 = BashOperator(
     task_id = 'descarga1',
     bash_command = 'wget -O /tmp/datos/humidity.csv.zip https://github.com/manuparra/MaterialCC2020/blob/master/humidity.csv.zip?raw=true',
+    depends_on_past = False,
     dag = dag,
 )
 
 DownloadData2 = BashOperator(
     task_id = 'descarga2',
     bash_command = 'wget -O /tmp/datos/temperatura.csv.zip https://github.com/manuparra/MaterialCC2020/blob/master/temperature.csv.zip?raw=true',
+    depends_on_past = False,
     dag = dag,
 )
 
@@ -74,7 +76,7 @@ UnzipData2 = BashOperator(
 LaunchDataBase = BashOperator(
     task_id = 'launch_db_container',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
-    docker-compose start mongodb',
+    docker-compose up -d mongodb',
     dag = dag,
 )
 
@@ -95,16 +97,16 @@ TestAPIv1 = BashOperator(
 LaunchServiceV1 = BashOperator(
     task_id = 'launch_service_v2',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
-    docker-compose start serviciov1',
+    docker-compose up -d serviciov1',
     dag = dag,
 )
 
 LaunchServiceV2 = BashOperator(
     task_id = 'launch_service_v1',
     bash_command = 'cd /tmp/datos/CC2-practica2/db && \
-    docker-compose start serviciov2',
+    docker-compose up -d serviciov2',
     dag = dag,
 )
 
 #Execution secuence 1
-MakeDir >> [GetRepo, DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> TestAPIv1 >> [LaunchServiceV1, LaunchServiceV2]
+MakeDir >> GetRepo >> [DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> TestAPIv1 >> [LaunchServiceV1, LaunchServiceV2]
