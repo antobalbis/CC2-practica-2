@@ -125,5 +125,4 @@ LaunchServiceV2 = BashOperator(
 )
 
 #Execution secuence 1
-MakeDir >> GetRepo >> [DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> [TestAPIv1, TestAPIv2] >> [LaunchServiceV1, LaunchServiceV2]
-
+MakeDir >> GetRepo >> [DownloadData1 >> UnzipData1, DownloadData2 >> UnzipData2] >> LaunchDataBase >> JoinDatos >> TestAPIv1 >> TestAPIv2 >> [LaunchServiceV1, LaunchServiceV2]
