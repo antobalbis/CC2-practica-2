@@ -49,4 +49,4 @@ def prediccion72():
     return predict(72)
 
 if __name__ == "__main__":
-    server.run(host='0.0.0.0')
+    server.run(host='0.0.0.0:5001')
