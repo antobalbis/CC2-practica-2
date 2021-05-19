@@ -12,6 +12,7 @@ default_args = {
     'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
+    'run_as_user': 'antonio',
     # 'queue': 'bash_queue',
     # 'pool': 'backfill',
     # 'priority_weight': 10,
@@ -32,6 +33,12 @@ dag = DAG (
     default_args=default_args,
     description='Grafo de tareas de la práctica 2',
     schedule_interval=timedelta(days=1),
+)
+
+MakeDir = BashOperator(
+    task_id = 'create_dir',
+    bash_command = 'mkdir -p /tmp/datos',
+    dag = dag,
 )
 
 DownloadData1 = BashOperator(
@@ -58,13 +65,21 @@ UnzipData2 = BashOperator(
     dag = dag,
 )
 
-SubSampleData = BashOperator(
-    task_id = 'subsample_data',
-    bash_command = 'head -43 /tmp/datos/humidity.csv > /tmp/datos/newHumidity.csv | \
-    head -43 /tmp/datos/temperature.csv > /tmp/datos/newTemperature.csv',
+LaunchServices = BashOperator(
+    task_id = 'launch_containers',
+    bash_command = 'cd ~/Documentos/CC2/CC2-practica2/db && \
+    docker-compose up -d',
+    dag = dag,
+)
+
+JoinDatos = BashOperator(
+    task_id = 'pre_process_data',
+    bash_command = 'cd ~/Documentos/CC2/CC2-practica2/ && \
+    python3 clean_data.py',
     dag = dag,
 )
 
 
+
 #Execution secuence 1
-DownloadData1 >> DownloadData2 >> UnzipData1 >> UnzipData2 >> SubSampleData
+MakeDir >> DownloadData1 >> DownloadData2 >> UnzipData1 >> UnzipData2 >> LaunchServices >>JoinDatos
